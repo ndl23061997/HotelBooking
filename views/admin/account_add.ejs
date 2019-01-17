@@ -1,0 +1,83 @@
+<%- include('./begin_html') %>
+
+ <!-- bootstrap-daterangepicker -->
+ <link href="/vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+ <!-- bootstrap-datetimepicker -->
+ <link href="/vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet">
+<!-- page content -->
+<div class="right_col" role="main" style="min-height: 3773px;">
+  <div class="page-content">
+    <div class="clearfix"></div>
+    <%- include('./alert_message') %>
+    
+
+    <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+              <div class="x_panel">
+                <div class="x_title">
+                  <h2>Thêm mới tài khoản</h2>
+                  <ul class="nav navbar-left panel_toolbox">
+                    <div class=" col-xs-12">
+                      <select class="form-control" id="acctype">
+                        <option value="-1" selected>Chọn loại tài khoản</option>
+                        <option value="0">Tài khoản Admin</option>
+                        <option value="1">Tài khoản nhân viên</option>
+                        <option value="2">Tài khoản người dùng</option>
+                      </select>
+                    </div>
+                  </ul>
+                  <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                  
+                  <%- include('add_user') %>
+                  <%- include('add_admin') %>
+                  <!-- Form thêm Nhân viên -->
+
+                  
+                </div>
+              </div>
+            </div>
+            <script>
+              $(document).ready(() => {
+
+                // Form switch
+                $('#form-user').addClass('hidden');
+                $('#form-admin').addClass('hidden');
+                $('#form-employee').addClass('hidden');
+                $('#acctype').change(()=> {
+                  $('#form-user').addClass('hidden');
+
+                  switch ($('#acctype').val()) {
+                    case '2':
+                      $('#form-user').removeClass('hidden');
+                      break;
+                    case '0':
+                      $('#form-admin').removeClass('hidden'); 
+                      break;
+                    default:
+                      break;
+                  }
+                });
+
+                // Đẩy dữ liệu lên server
+              });
+            </script>
+    </div>
+  </div>
+</div>
+<!-- /page content -->
+
+
+  <!-- bootstrap-daterangepicker -->
+  <script src="/vendors/moment/min/moment.min.js"></script>
+  <script src="/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+  <!-- bootstrap-datetimepicker -->    
+  <script src="/vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>  
+
+<script>
+  $('#myDatepicker').datetimepicker({
+    format: 'DD/MM/YYYY'
+  });
+</script>
+<%- include('./end_html') %>

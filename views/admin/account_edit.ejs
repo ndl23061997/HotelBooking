@@ -1,0 +1,48 @@
+<%- include('./begin_html') %>
+
+ <!-- bootstrap-daterangepicker -->
+ <link href="/vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+ <!-- bootstrap-datetimepicker -->
+ <link href="/vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet">
+<!-- page content -->
+<div class="right_col" role="main" style="min-height: 3773px;">
+  <div class="page-content">
+    <div class="clearfix"></div>
+    <%- include('./alert_message') %>
+    
+    </script>
+
+    <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+              <div class="x_panel">
+                <div class="x_title">
+                  <h2>Chỉnh sửa tài khoản</h2>
+                </div>
+
+                <div class="x_content">
+                        <% if(data.type == 2) { %>
+                            <%- include('edit_user') %>
+                        <% } else if (data.type == 0) %>
+                            <%- include('edit_admin') %>
+                </div>
+              </div>
+            </div>
+            
+    </div>
+  </div>
+</div>
+<!-- /page content -->
+
+
+  <!-- bootstrap-daterangepicker -->
+  <script src="/vendors/moment/min/moment.min.js"></script>
+  <script src="/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+  <!-- bootstrap-datetimepicker -->    
+  <script src="/vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>  
+
+<script>
+  $('#myDatepicker').datetimepicker({
+    format: 'DD/MM/YYYY'
+  });
+</script>
+<%- include('./end_html') %>

@@ -1,0 +1,100 @@
+<!-- Form thêm tài khoản admin -->
+<form class="form-horizontal form-label-left" id="form-admin">
+  <span class="section center">Tài khoản quản trị - Admin</span>
+
+  <div class="item form-group">
+    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="username"
+      >Tên tài khoản <span class="required">*</span>
+    </label>
+    <div class="col-md-6 col-sm-6 col-xs-12">
+      <input
+        id="user-username"
+        class="form-control col-md-7 col-xs-12"
+        data-validate-length-range="6"
+        data-validate-words="2"
+        name="user-username"
+        placeholder="both name(s) e.g Jon Doe"
+        required="required"
+        type="text"
+        disabled
+      />
+    </div>
+  </div>
+  <div class="item form-group">
+    <label for="admin-password" class="control-label col-md-3"
+      >Mật khẩu <span class="required">*</span>
+    </label>
+    <div class="col-md-6 col-sm-6 col-xs-12">
+      <input
+        id="admin-password"
+        type="password"
+        name="admin-password"
+        data-validate-length="6,8"
+        class="form-control col-md-7 col-xs-12"
+        required="required"
+      />
+    </div>
+  </div>
+  <div class="item form-group">
+    <label
+      for="admin-password2"
+      class="control-label col-md-3 col-sm-3 col-xs-12"
+      >Nhập lại mật khẩu <span class="required">*</span>
+    </label>
+    <div class="col-md-6 col-sm-6 col-xs-12">
+      <input
+        id="admin-password2"
+        type="password"
+        name="admin-password2"
+        data-validate-linked="password"
+        class="form-control col-md-7 col-xs-12"
+        required="required"
+      />
+    </div>
+  </div>
+  <div class="ln_solid"></div>
+  <div class="form-group">
+    <div class="col-md-6 col-md-offset-3">
+      <button type="submit" class="btn btn-primary">Cancel</button>
+      <button id="admin-send" class="btn btn-success">Đổi mật khẩu</button>
+    </div>
+  </div>
+</form>
+
+<script>
+  $(document).ready(() => {
+    // Gan du lieu
+    $('#user-username').val("<%= data.username %>");
+    // Post edit
+      $('#admin-send').click(
+          () => {
+              if($('#admin-password').val() == '' || $('#admin-password').val() != $('#admin-password2').val()) {
+                  sm('warning', 'Mật khẩu không khớp');
+                  return flase;
+              }
+              $.ajax({
+              url : '/admin/account/edit',
+              method : 'POST',
+              data : {
+                id : <%= data.id %>,
+                type: <%= data.type %>,
+                password : $('#admin-password').val()
+              },
+              success : (result) => {
+                  if(result.ok) {
+                    sm('success', result.message);
+                    setTimeout(() => {
+                        window.location.replace('/admin/account')
+                    }, 1000);
+                    return;
+                  } else {
+                    sm('danger', result.message);
+                    return;
+                  }
+              }
+              });
+              return;
+          }
+      );
+  })
+</script>
