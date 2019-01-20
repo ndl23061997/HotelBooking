@@ -1,0 +1,169 @@
+<%- include('../begin_html') %>
+
+<!-- bootstrap-daterangepicker -->
+<link
+  href="/vendors/bootstrap-daterangepicker/daterangepicker.css"
+  rel="stylesheet"
+/>
+<!-- bootstrap-datetimepicker -->
+<link
+  href="/vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css"
+  rel="stylesheet"
+/>
+
+<div class="right_col" role="main" style="min-height: 3773px;">
+  <div class="page-content">
+      <div class="page-title">
+          <div class="title_left"><h3>Đặt phòng</h3></div>
+    
+          <div class="title_right">
+            <div
+              class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search"
+            >
+              <div class="input-group">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Search for..."
+                />
+                <span class="input-group-btn">
+                  <button class="btn btn-default" type="button">Go!</button>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+    <div class="clearfix"></div>
+    <%- include('../alert_message') %>
+
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+          <div class="x_title">
+            <h2>Thêm đơn đặt phòng mới</h2>
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content">
+            <br />
+            <form class="form-horizontal form-label-left">
+
+              <!-- Chọn khách hàng -->
+              <div class="form-group">
+                  <label class="control-label col-md-3 col-sm-3 col-xs-12"
+                    >Chọn khách hàng:
+                  </label>
+                  <div class="col-md-9 col-sm-9 col-xs-12">
+                    <select class="form-control" id="select-customer"></select>
+                  </div>
+                </div>
+              <!-- #Chọn khách hàng -->
+
+              <!-- Chọn khách sạn -->
+              <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12"
+                  >Chọn khách sạn:
+                </label>
+                <div class="col-md-9 col-sm-9 col-xs-12">
+                  <select class="form-control" id="select-hotel"></select>
+                </div>
+              </div>
+
+              <!-- Chọn phòng -->
+              <div class="form-group hidden">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12"
+                  >Chọn phòng:
+                </label>
+                <div class="col-md-9 col-sm-9 col-xs-12">
+                  <select
+                    class="select2_single form-control"
+                    id="select-room"
+                    tabindex="-1"
+                  >
+                  </select>
+                </div>
+              </div>
+              <!-- /Chon phong -->
+
+
+              <!-- Ngay da co lich dat -->
+              <style>
+                #booked-list > .btn {
+                  margin-bottom: 6px !important;
+                }
+              </style>
+              <div class="form-group" id='div-booked'>
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12"
+                      >Lịch đặt của phòng:
+                    </label>
+                    <div class="col-md-9 col-sm-9 col-xs-12" role="group" id="booked-list">
+                      
+                    </div>
+                  </div>
+              <!-- /Ngay da co lich dat -->
+
+              <!-- Chọn ngày đặt phòng -->
+              <div class="form-group hidden" id="div-date">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12"
+                  >Chọn ngày đặt phòng:
+                </label>
+
+                <div class="col-md-9 col-sm-9 col-xs-12">
+                  <form class="form-horizontal">
+                    <fieldset>
+                      <div class="control-group">
+                        <div class="controls">
+                          <div
+                            class="input-prepend input-group"
+                            id="date-booking"
+                          >
+                            <span class="add-on input-group-addon"
+                              ><i
+                                class="glyphicon glyphicon-calendar fa fa-calendar"
+                              ></i
+                            ></span>
+                            <input
+                              type="text"
+                              style="width: 200px"
+                              name="reservation"
+                              id="reservation"
+                              class="form-control"
+                              value="01/20/2019 - 01/20/2019"
+                              readonly="readonly"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </fieldset>
+                  </form>
+                </div>
+              </div>
+              <!-- /Chon ngay dat phong -->
+
+              
+              <!-- Button dat phong  -->
+              <div class="form-group hidden" id='dobook'>
+                  <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                  </label>
+                <div class="col-md-9 col-sm-9 col-xs-12" id="booked-list">
+                    <button type='button' id="btn-booking" class='btn btn-primary'>Đặt phòng</button>
+                    <button type='button' id="btn-cancel" class='btn btn-danger'>Hủy</button>
+                </div>
+              </div>
+              <!-- Button dat phong  -->
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="/js/booking_add.js"></script>
+    <!-- bootstrap-daterangepicker -->
+    <script src="/vendors/moment/min/moment.min.js"></script>
+    <script src="/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <!-- bootstrap-datetimepicker -->
+    <script src="/vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+
+    
+  </div>
+</div>
+<%- include('../end_html') %>

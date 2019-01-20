@@ -8,8 +8,8 @@ conn.connect((err) => {
     
 })
 
-function queryAwait (query, data = null) {
-    return new Promise((resolve, reject) => {
+async function queryAwait (query, data = null) {
+    return await new Promise((resolve, reject) => {
         conn.query(query, data, (err, result) => {
             if(err) reject (err);
             else resolve(result);

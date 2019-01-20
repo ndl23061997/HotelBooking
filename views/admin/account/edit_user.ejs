@@ -1,0 +1,220 @@
+<!-- Form thêm người dùng thông thường -->
+<form class="form-horizontal form-label-left" id="form-user">
+  <span class="section center">Tài khoản người dùng - Normal user</span>
+
+  <div class="item form-group">
+    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name"
+      >Họ và tên <span class="required">*</span>
+    </label>
+    <div class="col-md-6 col-sm-6 col-xs-12">
+      <input
+        id="user-name"
+        class="form-control col-md-7 col-xs-12"
+        data-validate-length-range="6"
+        data-validate-words="2"
+        name="name"
+        placeholder="both name(s) e.g Jon Doe"
+        required="required"
+        type="text"
+      />
+    </div>
+    <!--  -->
+  </div>
+
+  <div class="form-group">
+    <label class="control-label col-md-3 col-sm-3 col-xs-12"
+      >Giới tính <span class="required">*</span></label
+    >
+    <div class="col-md-6 col-sm-6 col-xs-12">
+      <div id="gender" class="user btn-group" data-toggle="buttons">
+        <label
+          id="male"
+          class="btn btn-default"
+          data-toggle-class="btn-default"
+          data-toggle-passive-class="btn-primary"
+        >
+          <input type="radio" name="gender" value="0" /> &nbsp; Nam &nbsp;
+        </label>
+        <label
+          id="female"
+          class="btn btn-default"
+          data-toggle-class="btn-default"
+          data-toggle-passive-class="btn-primary"
+        >
+          <input type="radio" name="gender" value="1" /> Nữ
+        </label>
+      </div>
+    </div>
+  </div>
+  <br />
+
+  <div class="item form-group">
+    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="birth_day"
+      >Ngày sinh <span class="required">*</span>
+    </label>
+    <div class="input-group date col-md-5 col-sm-6 col-xs-10" id="myDatepicker">
+      <input
+        id="birth_day"
+        class="form-control col-md-6 col-xs-10"
+        style="margin-left:10px !important"
+        data-validate-length-range="6"
+        data-validate-words="2"
+        name="name"
+        required="required"
+        type="text"
+      />
+      <span class="input-group-addon">
+        <span
+          class="glyphicon glyphicon-calendar"
+          style="margin-left:10px !important"
+        ></span>
+      </span>
+    </div>
+  </div>
+  <div class="item form-group">
+    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name"
+      >Địa chỉ <span class="required">*</span>
+    </label>
+    <div class="col-md-6 col-sm-6 col-xs-12">
+      <input
+        id="user-address"
+        class="form-control col-md-7 col-xs-12"
+        data-validate-length-range="6"
+        data-validate-words="2"
+        name="address"
+        placeholder="both name(s) e.g Jon Doe"
+        required="required"
+        type="text"
+      />
+    </div>
+    <!--  -->
+  </div>
+
+  <div class="item form-group">
+    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="email"
+      >Email <span class="required">*</span>
+    </label>
+    <div class="col-md-6 col-sm-6 col-xs-12">
+      <input
+        type="email"
+        id="email"
+        name="email"
+        required="required"
+        class="form-control col-md-7 col-xs-12"
+      />
+    </div>
+  </div>
+
+  <div class="item form-group">
+    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="email"
+      >Nhập lại Email <span class="required">*</span>
+    </label>
+    <div class="col-md-6 col-sm-6 col-xs-12">
+      <input
+        type="email"
+        id="email2"
+        name="confirm_email"
+        data-validate-linked="email"
+        required="required"
+        class="form-control col-md-7 col-xs-12"
+      />
+    </div>
+  </div>
+  <div class="item form-group">
+    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="telephone"
+      >Số điện thoại <span class="required">*</span>
+    </label>
+    <div class="col-md-6 col-sm-6 col-xs-12">
+      <input
+        type="tel"
+        id="user-phone"
+        name="phone"
+        required="required"
+        data-validate-length-range="8,20"
+        class="form-control col-md-7 col-xs-12"
+      />
+    </div>
+  </div>
+  <div class="ln_solid"></div>
+  <div class="form-group">
+    <div class="col-md-6 col-md-offset-3">
+      <button type="reset" class="btn btn-primary">Hủy</button>
+      <button
+        type="button"
+        id="user-send"
+        class="btn btn-success"
+      >
+        Cập nhật
+      </button>
+    </div>
+  </div>
+</form>
+
+
+<script>
+    $(document).ready(() => {
+      console.log("clgt");
+      // Gan du lieu
+      $("#user-name").val("<%= data.name %>");
+      if ("<%= data.username %>" == 0) {
+        $("#male").addClass("active");
+      } else {
+        $("#female").addClass("active");
+      }
+      
+      var bd = new Date("<%= data.birthday %>");
+      $("#birth_day").val(bd.toLocaleDateString('en-GB')),
+      $("#email").val("<%= data.email %>"),
+      $("#user-password").val("<%= data.password %>"),
+      $("#user-phone").val("<%= data.phone_number %>"),
+      $("#user-address").val("<%= data.address %>");
+      // Post edit
+      $("#user-send").click(() => {
+  
+        let  name =  $("#user-name").val()
+        let  gender =  $(".user.btn-group > .btn.active > input").val()
+        let  birthday = $("#birth_day").val()
+        let  email = $("#email").val()
+        let  phone = $("#user-phone").val()
+        let  address = $("#user-address").val()
+  
+        if (name == '' || gender == ''
+          || birthday == '' || email == ''
+          || phone == '' || address == '') {
+          Swal("Lỗi", "Thông tin nhập chưa chính xác", "error");
+          return;
+        }
+        let ask = confirm('Bạn chắc chắn muốn cập nhật thông tin');
+        if(!ask) return;
+        let data = {
+          id: "<%= data.id %>",
+          type: '2',
+          name: $("#user-name").val(),
+          gender: $(".user.btn-group > .btn.active > input").val(),
+          birthday: $("#birth_day").val(),
+          email: $("#email").val(),
+          phone: $("#user-phone").val(),
+          address: $("#user-address").val()
+        };
+        console.log(data);
+        $.ajax({
+          method: "POST",
+          url: "/admin/account/edituser",
+          data: data,
+          success: (result) => {
+            if (result) {
+              Swal("Thành công", "Cập nhật thông tin thành công", "success");
+              setTimeout(() => {
+                window.location.href = '/admin/account';
+              }, 2000);
+              return;
+            } else {
+              Swal("Lỗi", "Cập nhật thông tin thất bại", "error");
+              
+            }
+          }
+        });
+      });
+      return;
+    });
+  </script>

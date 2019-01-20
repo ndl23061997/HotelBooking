@@ -3,6 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var session = require('express-session')
 
 var loginRouter = require('./routes/login');
 var adminRouter = require('./routes/admin');
@@ -17,7 +18,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.use(session({ secret: 'longdeptrai', cookie: { maxAge: 60000 }}))
 
 // Set router
 app.use('/login', loginRouter);

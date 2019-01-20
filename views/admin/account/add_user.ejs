@@ -29,7 +29,9 @@
       <div id="gender" class="user btn-group" data-toggle="buttons">
         <label
           class="btn btn-default active"
+        
           data-toggle-class="btn-default"
+        
           data-toggle-passive-class="btn-primary"
         
         >
@@ -88,8 +90,7 @@
             type="text"
           />
         </div>
-        <!--  -->
-      </div>
+  </div>
 
   <div class="item form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="email"
@@ -170,7 +171,6 @@
         required="required"
       />
     </div>
-    
   </div>
   <div class="item form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="telephone"
@@ -191,44 +191,46 @@
   <div class="ln_solid"></div>
   <div class="form-group">
     <div class="col-md-6 col-md-offset-3">
-      <button type="submit" class="btn btn-primary">Cancel</button>
-      <button id="user-send" click="return postAdmin()" type="submit" class="btn btn-success">
-        Submit
+      <button type="submit" class="btn btn-primary">Hủy</button>
+      <button id="user-send" click="return postAdmin()" type="button" class="btn btn-success">
+        Đăng kí
       </button>
     </div>
   </div>
 </form>
-
 <script>
-  
-        $(document).ready(()=>{
-           $('#user-send').click(()=>{
-            if($('#user-password').val() != $('#user-password2').val()) return false;
-            let data =  {
-                    type: $('#acctype').val(),
-                    name: $('#user-name').val(),
-                    gender : $('.user.btn-group > .btn.active > input').val(),
-                    birthday: $('#birth_day').val(),
-                    email : $('#email').val(),
-                    username : $('#user-username').val(),
-                    password : $('#user-password').val(),
-                    phone : $('#user-phone').val(),
-                    address : $('#user-address').val()
-                };
-                console.log(data);
-            $.ajax({
-                method : 'POST',
-                url : '/admin/account/add',
-                data : data,
-                success : (result) => {
-                    if(result.ok) {
-                        sm('success', result.message);
-                    } else {
-                        sm('danger', result.message);
-                    }
-                }
-            })
-            return;
-           })
-        })
+
+  $(document).ready(() => {
+    $('#user-send').click(() => {
+      if ($('#user-password').val() != $('#user-password2').val()) return false;
+      let data = {
+        type: $('#acctype').val(),
+        name: $('#user-name').val(),
+        gender: $('.user.btn-group > .btn.active > input').val(),
+        birthday: $('#birth_day').val(),
+        email: $('#email').val(),
+        username: $('#user-username').val(),
+        password: $('#user-password').val(),
+        phone: $('#user-phone').val(),
+        address: $('#user-address').val()
+      };
+      console.log(data);
+      $.ajax({
+        method: 'POST',
+        url: '/admin/account/add',
+        data: data,
+        success: (result) => {
+          if (result.ok) {
+            Swal('Thành công', result.message, 'success');
+            setTimeout(() => {
+              window.location.replace('/admin/account');
+            }, 1500);
+          } else {
+            Swal('Lỗi', result.message, 'error');
+          }
+        }
+      })
+      return;
+    })
+  })
 </script>

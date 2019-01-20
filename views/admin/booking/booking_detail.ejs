@@ -1,0 +1,196 @@
+<%- include('../begin_html') %>
+
+
+<div class="right_col" role="main" style="min-height: 3773px;">
+    <div class="page-content">
+        <div class="page-title">
+            <div class="title_left"><h3>Đặt phòng</h3></div>
+      
+            <div class="title_right">
+              <div
+                class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search"
+              >
+                <div class="input-group">
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Search for..."
+                  />
+                  <span class="input-group-btn">
+                    <button class="btn btn-default" type="button">Go!</button>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+      <div class="clearfix"></div>
+      <%- include('../alert_message') %>
+  
+      <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+          <div class="x_panel">
+            <div class="x_title">
+              <h2>Chi tiết đơn đặt phòng</h2>
+              <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+              <br />
+              <form class="form-horizontal form-label-left">
+                
+                <div class="item form-group">
+                  <label class="control-label col-md-3 col-sm-3 col-xs-12" >
+                    Mã đặt phòng
+                  </label>
+                  <div class="col-md-6 col-sm-6 col-xs-12">
+                    <input class="form-control col-md-7 col-xs-12" type="text" value="<%= data.id %>" readonly/>
+                  </div>
+                </div>
+                <div class="item form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                      Khách sạn
+                    </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      <input class="form-control col-md-7 col-xs-12" type="text" value="<%= data.hotel_name %>" readonly/>
+                    </div>
+                  </div>
+                <div class="item form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                      Phòng
+                    </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      <input class="form-control col-md-7 col-xs-12" type="text" value="<%= data.maphong %>" readonly/>
+                    </div>
+                  </div>
+
+                  <div class="item form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                        Ngày nhận
+                      </label>
+                      <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input class="form-control col-md-7 col-xs-12" type="text" value="<%= data.check_in %>" readonly/>
+                      </div>
+                    </div>
+
+                    <div class="item form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                          Ngày trả
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <input class="form-control col-md-7 col-xs-12" type="text" value="<%= data.check_out %>" readonly/>
+                        </div>
+                      </div>
+
+                      <div class="item form-group">
+                          <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                            Họ tên khách hàng
+                          </label>
+                          <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input class="form-control col-md-7 col-xs-12" type="text" value="<%= data.customer_name %>" readonly/>
+                          </div>
+                        </div>
+
+                        <div class="item form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                              Tiền phòng
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                              <input class="form-control col-md-7 col-xs-12" type="text" value="<%= data.money %> <%= data.currency %>" readonly/>
+                            </div>
+                          </div>
+
+                          <div class="item form-group">
+                              <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                                Tiền đặt cọc
+                              </label>
+                              <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input class="form-control col-md-7 col-xs-12" type="text" value="<%= data.deposit %> <%= data.currency %>" readonly/>
+                              </div>
+                            </div>
+                <!-- Button dat phong  -->
+                <div class="form-group" id='dobook'>
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                    </label>
+                  <div class="col-md-9 col-sm-9 col-xs-12" id="booked-list">
+                      <button type='button' id="btn-giaophong" class='btn btn-primary'>Giao phòng</button>
+                      <button type='button' id="btn-huydon" class='btn btn-danger'>Hủy đơn</button>
+                      <a href="/admin/booking" type='button' id="btn-return" class='btn btn-primary'>Quay lại</a>
+                  </div>
+                </div>
+                <!-- Button dat phong  -->
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  <%- include('../end_html') %>
+
+  <script>
+    $(document).ready(()=> {
+      //Giao phong cho khach
+      $("#btn-giaophong").click(() => {
+        let id = "<%= data.id %>"
+        $.confirm({
+          title: 'Chú ý',
+          content: "Bạn có chắc chắn muốn hủy đơn đặt phòng này không này không?",
+          buttons: {
+            "Đồng ý": () => {
+              $.ajax({
+                url: "/admin/booking/apply",
+                method: "POST",
+                data: { id: id },
+                success: function (result) {
+                  console.log(result);
+                  if (result.error) {
+                    Swal("Lỗi", "Giao phòng thất bại", "error");
+                    return;
+                  }
+                  Swal("Thành công", "Giao phòng thành công", "success");
+                  setTimeout(() => {
+                    window.location.replace('/admin/booking');
+                  }, 1000);
+
+                }
+              });
+            },
+            "Không": () => {
+              return;
+            }
+          }
+        }
+        )
+      });
+
+      // Huy Don dat phong
+      $("#btn-huydon").click(() => {
+        let id = "<%= data.id %>"
+        $.confirm({
+          title: 'Chú ý',
+          content: "Bạn có chắc chắn muốn hủy đơn đặt phòng này không này không?",
+          buttons: {
+            "Đồng ý": () => {
+              $.ajax({
+                url: "/admin/booking/delete",
+                method: "POST",
+                data: { id: id },
+                success: function (result) {
+                  if (result.error) {
+                    Swal("Lỗi", "Hủy phòng thất bại", "error");
+                    return;
+                  }
+                  Swal("Thành công", "Hủy phòng thành công", "success");
+                  setTimeout(() => {
+                    window.location.replace('/admin/booking');
+                  }, 1000);
+
+                }
+              });
+            },
+            "Không": () => { return; }
+          }
+        })
+      });
+    });
+  </script>

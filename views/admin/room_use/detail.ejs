@@ -1,0 +1,112 @@
+<form class="form-horizontal form-label-left">
+  <div class="item form-group">
+    <label class="control-label col-md-3 col-sm-3 col-xs-12">
+      Mã đặt phòng
+    </label>
+    <div class="col-md-6 col-sm-6 col-xs-12">
+      <input
+        class="form-control col-md-7 col-xs-12"
+        type="text"
+        value="<%= data.id %>"
+        readonly
+      />
+    </div>
+  </div>
+  <div class="item form-group">
+    <label class="control-label col-md-3 col-sm-3 col-xs-12"> Khách sạn </label>
+    <div class="col-md-6 col-sm-6 col-xs-12">
+      <input
+        class="form-control col-md-7 col-xs-12"
+        type="text"
+        value="<%= data.hotel_name %>"
+        readonly
+      />
+    </div>
+  </div>
+  <div class="item form-group">
+    <label class="control-label col-md-3 col-sm-3 col-xs-12"> Phòng </label>
+    <div class="col-md-6 col-sm-6 col-xs-12">
+      <input
+        class="form-control col-md-7 col-xs-12"
+        type="text"
+        value="<%= data.maphong %>"
+        readonly
+      />
+    </div>
+  </div>
+
+  <div class="item form-group">
+    <label class="control-label col-md-3 col-sm-3 col-xs-12"> Ngày nhận </label>
+    <div class="col-md-6 col-sm-6 col-xs-12">
+      <input
+        class="form-control col-md-7 col-xs-12"
+        type="text"
+        value="<%= data.check_in %>"
+        readonly
+      />
+    </div>
+  </div>
+
+  <div class="item form-group">
+    <label class="control-label col-md-3 col-sm-3 col-xs-12"> Ngày trả </label>
+    <div class="col-md-6 col-sm-6 col-xs-12">
+      <input
+        class="form-control col-md-7 col-xs-12"
+        type="text"
+        value="<%= data.check_out %>"
+        readonly
+      />
+    </div>
+  </div>
+
+  <div class="item form-group">
+    <label class="control-label col-md-3 col-sm-3 col-xs-12">
+      Họ tên khách hàng
+    </label>
+    <div class="col-md-6 col-sm-6 col-xs-12">
+      <input
+        class="form-control col-md-7 col-xs-12"
+        type="text"
+        value="<%= data.customer_name %>"
+        readonly
+      />
+    </div>
+  </div>
+
+  <div class="item form-group">
+    <label class="control-label col-md-3 col-sm-3 col-xs-12">
+      Tiền phòng
+    </label>
+    <div class="col-md-6 col-sm-6 col-xs-12">
+      <input
+        class="form-control col-md-7 col-xs-12"
+        type="text"
+        value="<%= data.money %> <%= data.currency %>"
+        readonly
+      />
+    </div>
+  </div>
+
+  <div class="item form-group">
+    <label class="control-label col-md-3 col-sm-3 col-xs-12">
+      Tiền đặt cọc
+    </label>
+    <div class="col-md-6 col-sm-6 col-xs-12">
+      <input
+        class="form-control col-md-7 col-xs-12"
+        type="text"
+        value="<%= data.deposit %> <%= data.currency %>"
+        readonly
+      />
+    </div>
+  </div>
+  <!-- Button dat phong  -->
+  <div class="form-group" id="dobook">
+    <label class="control-label col-md-3 col-sm-3 col-xs-12"> </label>
+    <div class="col-md-9 col-sm-9 col-xs-12" id="booked-list">
+
+      <a href="/admin/room_use" type="button" id="btn-return" class="btn btn-primary">Quay lại</a>
+    </div>
+  </div>
+  <!-- Button dat phong  -->
+</form>

@@ -1,0 +1,202 @@
+<form class="form-horizontal form-label-left">
+  <div class="item form-group">
+    <label class="control-label col-md-3 col-sm-3 col-xs-12">
+      Mã hóa đơn
+    </label>
+    <div class="col-md-6 col-sm-6 col-xs-12">
+      <input
+        class="form-control col-md-7 col-xs-12"
+        type="text"
+        id="bill-id"
+        value="<%= bill.id %>"
+        readonly
+      />
+    </div>
+  </div>
+  <div class="item form-group">
+    <label class="control-label col-md-3 col-sm-3 col-xs-12">
+      Tiền phòng
+    </label>
+    <div class="col-md-6 col-sm-6 col-xs-12">
+      <input
+        class="form-control col-md-7 col-xs-12"
+        type="text"
+        id="bill-room-money"
+        value="<%= bill.booking_money %> <%= data.currency %>"
+        readonly
+      />
+    </div>
+  </div>
+  <div class="item form-group">
+    <label class="control-label col-md-3 col-sm-3 col-xs-12">
+      Tiền dịch vụ
+    </label>
+    <div class="col-md-6 col-sm-6 col-xs-12">
+      <input
+        class="form-control col-md-7 col-xs-12"
+        type="text"
+        id="bill-ser-money"
+        value="<%= bill.service_money %> <%= data.currency %>"
+        readonly
+      />
+    </div>
+  </div>
+
+  <div class="item form-group">
+    <label class="control-label col-md-3 col-sm-3 col-xs-12">
+      Giảm giá phòng
+    </label>
+    <div class="col-md-6 col-sm-6 col-xs-12">
+      <input
+        class="form-control col-md-7 col-xs-12"
+        type="text"
+        value="<%= bill.discount_room %>"
+        id="bill-dis-room"
+        readonly
+      />
+    </div>
+  </div>
+
+  <div class="item form-group">
+    <label class="control-label col-md-3 col-sm-3 col-xs-12">
+      Giảm giá dịch vụ
+    </label>
+    <div class="col-md-6 col-sm-6 col-xs-12">
+      <input
+        class="form-control col-md-7 col-xs-12"
+        type="text"
+        id="bill-dis-ser"
+        value="<%= bill.discount_service %>"
+        readonly
+      />
+    </div>
+  </div>
+
+  <div class="item form-group">
+    <label class="control-label col-md-3 col-sm-3 col-xs-12">
+      Trạng thái
+    </label>
+    <div class="col-md-6 col-sm-6 col-xs-12">
+      <input
+        class="form-control col-md-7 col-xs-12"
+        type="text"
+        id="bill-status"
+        readonly
+      />
+    </div>
+  </div>
+
+  <div class="item form-group">
+    <label class="control-label col-md-3 col-sm-3 col-xs-12"> Tổng tiền </label>
+    <div class="col-md-6 col-sm-6 col-xs-12">
+      <input
+        class="form-control col-md-7 col-xs-12"
+        type="text"
+        id="bill-tt"
+        readonly
+      />
+    </div>
+  </div>
+  <!-- Button dat phong  -->
+  <div class="form-group" id="dobook">
+    <label class="control-label col-md-3 col-sm-3 col-xs-12"> </label>
+    <div class="col-md-9 col-sm-9 col-xs-12" id="booked-list">
+      <input
+        type="button"
+        class="btn btn-success"
+        id="btn-add-discount"
+        value="Nhập mã giảm giá"
+      />
+      <input
+        type="button"
+        class="btn btn-primary"
+        id="btn-pay"
+        value="Thanh toán"
+      />
+    </div>
+  </div>
+  <!-- Button dat phong  -->
+</form>
+
+<script>
+  $(document).ready(() => {
+    let status = "<%= bill.status %>";
+    if (status == 0) {
+        $("#bill-status").val("Chưa thanh toán");
+        $('#btn-pay').show();
+    } 
+    else {
+        $("#bill-status").val("Đã thanh toán");
+        $('#btn-pay').hide();
+    }
+
+    let room_money = Number("<%= bill.booking_money %>");
+    let service_money = Number("<%= bill.service_money %>");
+    let room_discount = Number("<%= bill.discount_room %>");
+    let service_discount = Number("<%= bill.discount_service %>");
+    let tt = room_money*(1- room_discount)  + service_money*(1 - service_discount);
+    $('#bill-tt').val(tt + " <%= data.currency %>");
+
+    $('#btn-pay').click(()=> {
+        if($("#bill-status").val() !== "Chưa thanh toán") {
+            Swal('Lỗi', 'Hóa đơn đã được thanh toán trước đó', 'error');
+            return;
+        }
+    });
+
+    $('#btn-add-discount').click(()=> {
+        if($("#bill-status").val() !== "Chưa thanh toán") {
+            Swal('Lỗi', 'Hóa đơn đã được thanh toán trước đó', 'error');
+            return;
+        }
+
+        // Thêm giảm giá cho hóa đơn
+        $.confirm({
+            title : 'Thêm mã giảm giá cho phòng',
+            content : '' +
+            '<form class="formName">' +
+            '<div class="form-group">' +
+            '<label>Nhập mã giảm giá</label>' +
+            '<input type="text" placeholder="Nhập vào mã giảm giá" class="form-control" id="code" required />'+
+            '</form>',
+            buttons : {
+                ok : {
+                    text : "Xác nhận",
+                    btnClass: "btn btn-success",
+                    action : () => {
+                        let dis_code = $('#code').val();
+                        if(dis_code === '') {
+                            $.alert('Mã giảm giá không hợp lệ');
+                            return;
+                        }
+                        addDiscount(dis_code);
+                        return;
+                    }
+                },
+                cancel: {
+                    text: 'Hủy',
+                    btnClass: "btn btn-danger"
+                }
+            }
+            
+        })
+    });
+
+    function addDiscount(code) {
+          $.ajax({
+              method: 'POST',
+              url: '/admin/room_use/add-discount',
+              data: { code: code, idbill: "<%= bill.id %>" }
+          }).done((result) => {
+              if (result.ok == 1) {
+                  Swal('Thành công', result.message, 'success');
+                  window.location.reload();
+                  return;
+              } else {
+                  Swal('Thất bại', result.message, 'error');
+                  return;
+              }
+          })
+      }
+  });
+</script>

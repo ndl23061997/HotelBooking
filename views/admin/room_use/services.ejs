@@ -1,0 +1,115 @@
+<h4>Gọi dịch vụ</h4>
+
+<form class="form-horizontal form-label-left">
+  <div class="form-group">
+    <label class="control-label col-md-3 col-sm-3 col-xs-12"
+      >Chọn loại dịch vụ:
+    </label>
+    <div class="col-md-6 col-sm-6 col-xs-12">
+      <select class="form-control" id="sel-ser-type"></select>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="control-label col-md-3 col-sm-3 col-xs-12"
+      >Chọn dịch vụ:
+    </label>
+    <div class="col-md-6 col-sm-6 col-xs-12">
+      <select class="form-control" id="sel-ser"></select>
+    </div>
+  </div>
+
+  <div class="form-group hidden" id="dt-service">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12">
+        </label>
+        <div class="col-md-6 col-sm-6 col-xs-12" id="detail-ser">
+        </div>
+    </div>
+
+  <!-- Button dat phong  -->
+  <div class="form-group" id="dobook">
+    <label class="control-label col-md-3 col-sm-3 col-xs-12"> </label>
+    <div class="col-md-6 col-sm-6 col-xs-12">
+      <button type="button" id="btn-add-ser" class="btn btn-success">Thêm vào hóa đơn</button>
+      
+    </div>
+  </div>
+  <!-- Button dat phong  -->
+</form>
+
+<script>
+    $(document).ready(()=> {
+        // Lấy danh sách loại dịch vụ
+        $.ajax({
+            url: '/admin/room_use/get-ls-service-type'
+        }).done((data)=> {
+            $('#sel-ser-type').append('<option value="0">-- Chọn loại dịch vụ --</option>');
+            data.forEach(element => {
+                let op = "<option value='" + element.id + "'>"+ element.name +"</option>"
+                $('#sel-ser-type').append(op);
+            });
+        });
+        // lấy danh sách dịch vụ
+        $('#sel-ser-type').change(()=> {
+            $('#sel-ser').html(null);
+            $.ajax({
+                url: '/admin/room_use/get-ls-service/' + $('#sel-ser-type').val(),
+            }).done((data) => {
+                // Thành công
+                $('#sel-ser').append('<option value="0">-- Chọn dịch vụ --</option>');
+                data.forEach(element => {
+                    let op = "<option value='" + element.id + "'>"+ element.name +"</option>"
+                    $('#sel-ser').append(op);
+                });
+                $('#sel-ser').change();
+            });
+        })
+
+        // Chọn dịch vụ
+        $('#sel-ser').change(()=> {
+            if($('#sel-ser').val() == 0) {
+                $('#dt-service').show();
+                return;
+            }
+            $('#detail-ser').html(null);
+            $.ajax({
+                url: '/admin/room_use/get-service/' + $('#sel-ser').val()
+            }).done((data)=> {
+                console.log(data);
+                $('#dt-service').removeClass('hidden');
+                $('#detail-ser').append('<p>Mã số: '+ data.maso +'<p>')
+                $('#detail-ser').append('<p>Tên: '+ data.name +'<p>')
+                $('#detail-ser').append('<p>Mô tả: '+ data.des +'<p>')
+                $('#detail-ser').append('<p>Giá: '+ data.price + ' ' + data.currency + '<p>')
+                $('#detail-ser').append('Chọn số lượng:')
+                let ip = '<input class="form-control col-md-7 col-xs-12" id="ip-count" min="1" value="1" type="number"/>';
+                $('#detail-ser').append(ip)
+            });
+        });
+
+        // Khi thêm dịch vụ phòng
+
+        $('#btn-add-ser').click(()=> {
+            let idService = $('#sel-ser').val();
+            let idBill = "<%= bill.id %>";
+            let count = $('#ip-count').val();
+
+            let data = {
+                idService : idService, 
+                idBill : idBill,
+                count : count
+            }
+            $.ajax({
+                method: 'POST',
+                url: '/admin/room_use/order',
+                data: data
+            }).done((result)=> {
+                if(result.ok == true) Swal('Thành công', result.message, 'success')
+                else Swal('Lỗi', result.message, 'error')
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1500);
+            });
+        });
+    });
+</script>
