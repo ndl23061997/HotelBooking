@@ -7,8 +7,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Gentelella Alela! | </title>
-
+    <title>Đăng nhập hệ thống </title>
+    <!-- jQuery -->
+    <script src="/vendors/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
     <!-- Bootstrap -->
     <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
@@ -17,6 +20,10 @@
     <link href="../vendors/nprogress/nprogress.css" rel="stylesheet">
     <!-- Animate.css -->
     <link href="../vendors/animate.css/animate.min.css" rel="stylesheet">
+
+        <!-- Sweet Alert -->
+        <script src="/vendors/sweetalert2/sweetalert2.min.js"></script>
+        <link rel="stylesheet" href="/vendors/sweetalert2/sweetalert2.min.css">
 
     <!-- Custom Theme Style -->
     <link href="../build/css/custom.min.css" rel="stylesheet">
@@ -30,32 +37,32 @@
       <div class="login_wrapper">
         <div class="animate form login_form">
           <section class="login_content">
-            <form action="#" method="POST">
-              <h1>Dang nhap</h1>
+            <form>
+              <h1>Đăng nhập</h1>
               <div>
-                <input type="text" class="form-control" placeholder="Username" required="" name="username"/>
+                <input type="text" class="form-control" placeholder="Tên đăng nhập" required id="username"/>
               </div>
               <div>
-                <input type="password" class="form-control" placeholder="Password" required="" name="password"/>
+                <input type="password" class="form-control" placeholder="Mật khẩu" required id="password"/>
               </div>
               <div>
-                <input class="btn btn-default submit" value="Log in">
-                <a class="reset_pass" href="#">Lost your password?</a>
+                <input class="btn btn-default" type="button" id="btn-login" value="Đăng nhập">
+                <a class="reset_pass" href="#">Quên mật khẩu?</a>
               </div>
 
               <div class="clearfix"></div>
 
               <div class="separator">
-                <p class="change_link">New to site?
-                  <a href="#signup" class="to_register"> Create Account </a>
+                <p class="change_link">Chưa có tài khoản?
+                  <a href="#signup" class="to_register" style="color : rgb(50, 50, 170)"> Đăng kí tài khoản </a>
                 </p>
 
                 <div class="clearfix"></div>
                 <br />
 
                 <div>
-                  <h1><i class="fa fa-paw"></i> Gentelella Alela!</h1>
-                  <p>©2016 All Rights Reserved. Gentelella Alela! is a Bootstrap 3 template. Privacy and Terms</p>
+                  <h1><i class="fa fa-paw"></i> Nguyễn Đức Long@NUCE</h1>
+                  <p>©2019 Phần mềm quản lí khách sạn</p>
                 </div>
               </div>
             </form>
@@ -65,33 +72,33 @@
         <div id="register" class="animate form registration_form">
           <section class="login_content">
             <form>
-              <h1>Create Account</h1>
+              <h1>Đăng kí tài khoản</h1>
               <div>
-                <input type="text" class="form-control" placeholder="Username" required="" />
+                <input type="text" class="form-control" placeholder="Tên đăng nhập" id="signup-username" required />
               </div>
               <div>
-                <input type="email" class="form-control" placeholder="Email" required="" />
+                <input type="password" class="form-control" placeholder="Mật khẩu" id="signup-password"required />
               </div>
               <div>
-                <input type="password" class="form-control" placeholder="Password" required="" />
-              </div>
+                  <input type="password" class="form-control" placeholder="Nhập lại mật khẩu" id="signup-password2"required />
+                </div>
               <div>
-                <a class="btn btn-default submit" href="index.html">Submit</a>
+                <button class="btn btn-default" type="button" id="btn-signup">Đăng kí</button>
               </div>
 
               <div class="clearfix"></div>
 
               <div class="separator">
-                <p class="change_link">Already a member ?
-                  <a href="#signin" class="to_register"> Log in </a>
+                <p class="change_link">Bạn đã có tài khoản ?
+                  <a href="#signin" class="to_register"> Đăng nhập </a>
                 </p>
 
                 <div class="clearfix"></div>
                 <br />
 
                 <div>
-                  <h1><i class="fa fa-paw"></i> Gentelella Alela!</h1>
-                  <p>©2016 All Rights Reserved. Gentelella Alela! is a Bootstrap 3 template. Privacy and Terms</p>
+                    <h1><i class="fa fa-paw"></i> Nguyễn Đức Long@NUCE</h1>
+                    <p>©2019 Phần mềm quản lí khách sạn</p>
                 </div>
               </div>
             </form>
@@ -101,3 +108,29 @@
     </div>
   </body>
 </html>
+
+
+<script>
+  $(document).ready(() => {
+    $('#btn-login').click(()=> {
+      let username = $('#username').val();
+      let password = $('#password').val();
+
+      $.ajax({
+        url: 'login',
+        method: 'POST',
+        data : {username : username, password: password}
+      }).done((result) => {
+        if(result.ok == false) {
+          Swal('Lỗi', result.message, 'error');
+        } else {
+          Swal("Đăng nhập thành công", '','success');
+          setTimeout(() => {
+            window.location.replace(result.url);
+          }, 1500);
+        }
+      })
+    });
+  });
+  
+</script>

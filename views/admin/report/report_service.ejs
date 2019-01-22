@@ -1,0 +1,288 @@
+<%- include('../begin_html') %>
+<!-- page content -->
+<div class="right_col" role="main" style="min-height: 3773px;">
+  <div class="page-content">
+    <div class="page-title">
+      <div class="title_left"><h3>Báo cáo</h3></div>
+
+      <div class="title_right">
+        <div
+          class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search"
+        >
+          <div class="input-group">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Search for..."
+            />
+            <span class="input-group-btn">
+              <button class="btn btn-default" type="button">Go!</button>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="clearfix"></div>
+    <%- include('../alert_message') %>
+
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+          <div class="x_title">
+            <h2>Báo cáo dịch vụ</h2>
+
+            <div class="clearfix"></div>
+          </div>
+          
+          <div class="x_content">
+            <form class="form-horizontal form-label-left" width="100%">
+              <!-- Chọn khách sạn -->
+              <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12"
+                  >Chọn khách sạn:
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <select class="form-control" id="select-hotel"></select>
+                </div>
+              </div>
+              <!-- Chọn khách sạn -->
+              <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12"
+                  >Chọn tháng:
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <select class="form-control" id="select-month"></select>
+                </div>
+              </div>
+              <!-- Chọn khách sạn -->
+              <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12"
+                  >Chọn dịch vụ:
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <select class="form-control" id="select-service"></select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                  <div class="col-md-6 col-md-offset-3">
+                    <button id="view" type="button" class="btn btn-success">
+                      Xem
+                    </button>
+                  </div>
+                </div>
+            </form>
+            <br>
+            <!-- Table -->
+            <div
+              id="datatable_buttons_wrapper"
+              class="dataTables_wrapper form-inline dt-bootstrap no-footer"
+            >
+              <div class="row"></div>
+              <div class="row">
+                <div class="col-sm-12">
+                  <table
+                    id="datatable-buttons"
+                    class="table table-striped table-bordered dataTable no-footer dtr-inline collapsed"
+                    role="grid"
+                    aria-describedby="datatable-buttons_info"
+                    style="width: 1033px;"
+                  >
+                    <thead>
+                      <tr role="row">
+                        <th
+                          class="sorting_asc"
+                          tabindex="0"
+                          aria-controls="datatable-buttons"
+                          rowspan="1"
+                          colspan="1"
+                          style="width: 159px;"
+                          aria-sort="ascending"
+                        >
+                          Mã dịch vụ
+                        </th>
+                        <th
+                          class="sorting"
+                          tabindex="0"
+                          aria-controls="datatable-buttons"
+                          rowspan="1"
+                          colspan="1"
+                          style="width: 251px;"
+                        >
+                          Tên dịch vụ
+                        </th>
+                        <th
+                          class="sorting"
+                          tabindex="0"
+                          aria-controls="datatable-buttons"
+                          rowspan="1"
+                          colspan="1"
+                          style="width: 120px;"
+                        >
+                          Tháng
+                        </th>
+                        <th
+                          class="sorting"
+                          tabindex="0"
+                          aria-controls="datatable-buttons"
+                          rowspan="1"
+                          colspan="1"
+                          style="width: 61px; display: none;"
+                        >
+                          Doanh thu
+                        </th>
+                        <th
+                          class="sorting hidden"
+                          tabindex="0"
+                          aria-controls="datatable-buttons"
+                          rowspan="1"
+                          colspan="1"
+                          style="width: 117px; display: none;"
+                          disabled
+                        >
+                          
+                        </th>
+                        <th
+                          class="sorting hidden"
+                          tabindex="0"
+                          aria-controls="datatable-buttons"
+                          rowspan="1"
+                          colspan="1"
+                          style="width: 92px; display: none;"
+                          disabled
+                        >
+                          
+                        </th>
+                      </tr>
+                    </thead>
+
+                    <tbody id="tbody">
+                        
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /page content -->
+<%- include('../end_html') %>
+
+<!-- Datatables -->
+<script src="/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<script src="/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+<script src="/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
+<script src="/vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
+<script src="/vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
+<script src="/vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
+<script src="/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
+<script src="/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+<script src="/vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+<script src="/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
+<script src="/vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
+<script src="/vendors/jszip/dist/jszip.min.js"></script>
+<script src="/vendors/pdfmake/build/pdfmake.min.js"></script>
+<script src="/vendors/pdfmake/build/vfs_fonts.js"></script>
+
+<script>
+  $(document).ready(() => {
+    // var table = $('#datatable-buttons').DataTable();
+    // new $.fn.dataTable.Buttons( table, {
+    // buttons: [
+    //     'copy', 'excel', 'pdf'
+    // ]
+    // } );
+    $.ajax({
+      url: 'getlisthotel',
+      method: 'GET'
+    }).done((datas)=> {
+      datas.forEach(element => {
+        $op = '<option value="'+ element.id +'">'+ element.name +'</option>'
+        $('#select-hotel').append($op);
+      });
+    })
+
+    for(let i = 1; i <= 12; i++) {
+      $op = '<option value="'+ i +'">Tháng '+ i +'</option>'
+      $('#select-month').append($op);
+    }
+    
+    $.ajax({
+      url:'getlistservice',
+      method:'GET'
+    }).done((datas)=> {
+      $op = '<option value="0">-- Tất cả --</option>'
+      $('#select-service').append($op); 
+      datas.forEach(element => {
+        $op = '<option value="'+ element.id +'">'+ element.name +'</option>'
+        $('#select-service').append($op);
+      });
+      
+    })
+
+    $('#view').click(()=> {
+      $hotel = $('#select-hotel').val();
+      $month = $('#select-month').val();
+      $service = $('#select-service').val();
+      let month = $month;
+      if($service == 0) {
+
+        $.ajax({
+          url: 'service-all',
+          method: 'POST',
+          data : {hotel : $hotel , month : $month, service : $service}
+        }).done((datas)=>{
+          $('#tbody').html(null);
+          datas.forEach(el => {
+            
+            $row = 
+            `<tr role="row" class="odd">
+              <td tabindex="" class="sorting_1">${el.service_id}</td>
+              <td>${el.name}</td>
+              <td style="">${$month}</td>
+              <td style="">${el.booking_money}</td>
+              <td style="display: none;" class="hidden disabled"></td>
+              <td style="display: none;" class="hidden disabled"></td>
+            </tr>`
+            console.log($row);
+            $('#tbody').html($('#tbody').html() + $row)
+          });
+
+          
+        })
+
+      } else {
+        $.ajax({
+          url: 'service-one',
+          method: 'POST',
+          data : {hotel : $hotel , month : $month, service : $service}
+        }).done((datas)=>{
+          $('#tbody').html(null);
+          datas.forEach(el => {
+            $row = 
+            `<tr role="row" class="odd">
+              <td tabindex="" class="sorting_1">${el.service_id}</td>
+              <td>${el.name}</td>
+              <td style="">${$month}</td>
+              <td style="">${el.booking_money}</td>
+              <td style="display: none;" class="hidden disabled"></td>
+              <td style="display: none;" class="hidden disabled"></td>
+            </tr>`
+            console.log($row);
+            $('#tbody').append($row);
+          });
+
+          
+        })
+      }
+
+    });
+
+  })
+</script>

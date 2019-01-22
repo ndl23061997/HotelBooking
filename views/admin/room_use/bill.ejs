@@ -97,22 +97,24 @@
       />
     </div>
   </div>
+  <!-- Đã thanh toán -->
+  <div class="item form-group">
+      <label class="control-label col-md-3 col-sm-3 col-xs-12"> Đã thanh toán </label>
+      <div class="col-md-6 col-sm-6 col-xs-12">
+        <input
+          class="form-control col-md-7 col-xs-12"
+          type="text"
+          id="bill-da-tt"
+          readonly
+        />
+      </div>
+    </div>
   <!-- Button dat phong  -->
   <div class="form-group" id="dobook">
     <label class="control-label col-md-3 col-sm-3 col-xs-12"> </label>
     <div class="col-md-9 col-sm-9 col-xs-12" id="booked-list">
-      <input
-        type="button"
-        class="btn btn-success"
-        id="btn-add-discount"
-        value="Nhập mã giảm giá"
-      />
-      <input
-        type="button"
-        class="btn btn-primary"
-        id="btn-pay"
-        value="Thanh toán"
-      />
+      <input type="button" class="btn btn-success" id="btn-add-discount" value="Nhập mã giảm giá" />
+      <input type="button" class="btn btn-primary" id="btn-pay" value="Thanh toán" />
     </div>
   </div>
   <!-- Button dat phong  -->
@@ -122,81 +124,122 @@
   $(document).ready(() => {
     let status = "<%= bill.status %>";
     if (status == 0) {
-        $("#bill-status").val("Chưa thanh toán");
-        $('#btn-pay').show();
-    } 
+      $("#bill-status").val("Chưa thanh toán");
+      $('#btn-pay').show();
+    }
     else {
-        $("#bill-status").val("Đã thanh toán");
-        $('#btn-pay').hide();
+      $("#bill-status").val("Đã thanh toán");
+      $('#btn-pay').hide();
     }
 
     let room_money = Number("<%= bill.booking_money %>");
     let service_money = Number("<%= bill.service_money %>");
     let room_discount = Number("<%= bill.discount_room %>");
     let service_discount = Number("<%= bill.discount_service %>");
-    let tt = room_money*(1- room_discount)  + service_money*(1 - service_discount);
+    let tt = Number("<%= bill.tt %>");
+    let da_tt = Number("<%= bill.da_tt %>");
     $('#bill-tt').val(tt + " <%= data.currency %>");
-
-    $('#btn-pay').click(()=> {
-        if($("#bill-status").val() !== "Chưa thanh toán") {
-            Swal('Lỗi', 'Hóa đơn đã được thanh toán trước đó', 'error');
-            return;
+    $('#bill-da-tt').val(da_tt + " <%= data.currency %>");
+    $('#btn-pay').click(() => {
+      if (da_tt >= tt) {
+        Swal('Lỗi', 'Hóa đơn đã được thanh toán trước đó', 'error');
+        return;
+      }
+      $.confirm({
+        title: 'Chú ý',
+        content: 'Thanh toán hóa đơn?',
+        buttons: {
+          ok: {
+            text: "Xác nhận",
+            btnClass: "btn btn-success",
+            action: () => {
+              payBill();
+            }
+          },
+          cancel: {
+            text: 'Hủy',
+            btnClass: "btn btn-danger"
+          }
         }
+
+      })
     });
 
-    $('#btn-add-discount').click(()=> {
-        if($("#bill-status").val() !== "Chưa thanh toán") {
-            Swal('Lỗi', 'Hóa đơn đã được thanh toán trước đó', 'error');
-            return;
+    function payBill() {
+      let id = "<%= bill.id %>"
+      $.ajax({
+        method: "POST", //#endregionr
+        url: '/admin/room_use/paybill',
+        data: { id: id }
+      }).done((result) => {
+        if (result.ok == 1) {
+          Swal('Thanh toán thành công', result.message, 'success');
+          window.location.reload();
+          return;
+        } else {
+          Swal('Có lỗi xảy ra, hóa đơn  chưa được thanh toán', result.message, 'error');
+          return;
+        }
+      });
+    }
+    $('#btn-add-discount').click(() => {
+      if ($("#bill-status").val() !== "Chưa thanh toán") {
+        Swal('Lỗi', 'Hóa đơn đã được thanh toán trước đó', 'error');
+        return;
+      }
+
+      // Thêm giảm giá cho hóa đơn
+      $.confirm({
+        title: 'Thêm mã giảm giá cho phòng',
+        content: '' +
+          '<form class="formName">' +
+          '<div class="form-group">' +
+          '<label>Nhập mã giảm giá</label>' +
+          '<input type="text" placeholder="Nhập vào mã giảm giá" class="form-control" id="code" required />' +
+          '</form>',
+        buttons: {
+          ok: {
+            text: "Xác nhận",
+            btnClass: "btn btn-success",
+            action: () => {
+              let dis_code = $('#code').val();
+              if (dis_code === '') {
+                $.alert('Mã giảm giá không hợp lệ');
+                return;
+              }
+              addDiscount(dis_code);
+              return;
+            }
+          },
+          cancel: {
+            text: 'Hủy',
+            btnClass: "btn btn-danger"
+          }
         }
 
-        // Thêm giảm giá cho hóa đơn
-        $.confirm({
-            title : 'Thêm mã giảm giá cho phòng',
-            content : '' +
-            '<form class="formName">' +
-            '<div class="form-group">' +
-            '<label>Nhập mã giảm giá</label>' +
-            '<input type="text" placeholder="Nhập vào mã giảm giá" class="form-control" id="code" required />'+
-            '</form>',
-            buttons : {
-                ok : {
-                    text : "Xác nhận",
-                    btnClass: "btn btn-success",
-                    action : () => {
-                        let dis_code = $('#code').val();
-                        if(dis_code === '') {
-                            $.alert('Mã giảm giá không hợp lệ');
-                            return;
-                        }
-                        addDiscount(dis_code);
-                        return;
-                    }
-                },
-                cancel: {
-                    text: 'Hủy',
-                    btnClass: "btn btn-danger"
-                }
-            }
-            
-        })
+      })
     });
 
     function addDiscount(code) {
-          $.ajax({
-              method: 'POST',
-              url: '/admin/room_use/add-discount',
-              data: { code: code, idbill: "<%= bill.id %>" }
-          }).done((result) => {
-              if (result.ok == 1) {
-                  Swal('Thành công', result.message, 'success');
-                  window.location.reload();
-                  return;
-              } else {
-                  Swal('Thất bại', result.message, 'error');
-                  return;
-              }
-          })
-      }
+      $.ajax({
+        method: 'POST',
+        url: '/admin/room_use/add-discount',
+        data: { code: code, idbill: "<%= bill.id %>" }
+      }).done((result) => {
+        console.log(result);
+        
+        if (result.ok == 1) {
+          Swal('Thành công', result.message, 'success');
+          setTimeout(() => {
+            window.location.reload();
+          }, 1200);
+          
+          return;
+        } else {
+          Swal('Thất bại', result.message, 'error');
+          return;
+        }
+      })
+    }
   });
 </script>

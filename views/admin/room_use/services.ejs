@@ -30,7 +30,7 @@
   <div class="form-group" id="dobook">
     <label class="control-label col-md-3 col-sm-3 col-xs-12"> </label>
     <div class="col-md-6 col-sm-6 col-xs-12">
-      <button type="button" id="btn-add-ser" class="btn btn-success">Thêm vào hóa đơn</button>
+      <button type="button" id="btn-add-ser" class="btn btn-success">Thêm dịch vụ</button>
       
     </div>
   </div>
@@ -49,6 +49,7 @@
                 $('#sel-ser-type').append(op);
             });
         });
+        
         // lấy danh sách dịch vụ
         $('#sel-ser-type').change(()=> {
             $('#sel-ser').html(null);

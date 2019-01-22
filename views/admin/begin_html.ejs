@@ -70,7 +70,7 @@
             </div>
             <!-- /menu profile quick info -->
 
-            <br />
+            <br/>
 
             <!-- sidebar menu -->
             <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
@@ -78,7 +78,10 @@
                 <h3>General</h3>
                 <ul class="nav side-menu">
                   <!-- Trang chủ -->
-                  <li><a><i class="fa fa-home"></i> Trang chủ </a></li>
+                  <li><a href="/admin/room_use"><i class="fa fa-home"></i> Trang chủ </a></li>
+                  <!-- Quản lí phòng đang sử dụng -->
+                  <li><a href="/admin/room_use"><i class="fa fa-tachometer"></i> Phòng đang sử dụng</a></li>
+
                   <!-- Đặt phòng -->
                   <li><a><i class="fa fa-edit"></i> Đặt phòng <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
@@ -86,6 +89,32 @@
                       <li><a href="/admin/booking/add">Thêm đơn đặt phòng</a></li>
                     </ul>
                   </li>
+                  
+                  <!-- Quản lí khách sạn -->
+                  <li><a><i class="fa fa-building-o"></i> Quản lí khách sạn <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="http://localhost:2306/admin/room/hotel-list">Khách sạn</a></li>
+                      <li><a href="http://localhost:2306/admin/room/room-list">Phòng</a></li>
+                      <li><a href="http://localhost:2306/admin/service/list/service">Dịch vụ phòng</a></li>
+                    </ul>
+                  </li>
+
+                  <!-- Giảm giá -->
+                  <li><a><i class="fa fa-dollar"></i> Giảm giá <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="/admin/discount/list">Quản lí giảm giá</a></li>
+                      <li><a href="/admin/discount/add">Thêm mã giảm giá</a></li>
+                    </ul>
+                  </li>
+
+                  <!-- Quản lí khách sạn -->
+                  <li><a><i class="fa fa-newspaper-o"></i> Quản lí tin tức <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="http://localhost:2306/admin/news/list">Danh sách tin tức</a></li>
+                      <li><a href="http://localhost:2306/admin/news/add">Thêm tin tức</a></li>
+                    </ul>
+                  </li>
+
                   <!-- Quản lí tài khoản -->
                   <li><a><i class="fa fa-users"></i> Quản lí tài khoản <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
@@ -93,14 +122,17 @@
                       <li><a href="/admin/account/add">Thêm tài khoản</a></li>
                     </ul>
                   </li>
-                  <!-- Phòng đang sử dụng -->
-                  <li><a href="/admin/room_use"><i class="fa fa-tachometer"></i> Phòng đang sử dụng</a></li>
+
+                  <!-- Thống kê báo cáo -->
+                  
                   <li><a><i class="fa fa-bar-chart-o"></i> Thống kê, báo cáo <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="morisjs.html">Báo cáo phòng</a></li>
-                      <li><a href="echarts.html">Báo cáo dịch vụ</a></li>
+                      <li><a href="/admin/report/room">Báo cáo phòng</a></li>
+                      <li><a href="/admin/report/service">Báo cáo dịch vụ</a></li>
                     </ul>
                   </li>
+
+                  
                   
                 </ul>
               </div>

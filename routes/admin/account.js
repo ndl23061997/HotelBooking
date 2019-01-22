@@ -3,12 +3,15 @@ var router = express.Router();
 var mysql = require('../../helpers/MySqlHelper')
 var model = require('../../models/admin/account')
 var bcrypt = require('../../helpers/BcryptHelpers');
+var auth = require('../../helpers/Auth');
+// Check dang nhap
+router.use(auth.authAdmin);
+
 router.get('/', getListAccount);
 router.get('/add',  getAdd);
 router.get('/edit', getEdit);
 router.post('/add', postAdd);
 router.post('/edit',postEdit);
-router.post('/delete', deleteAccount);
 router.post('/edituser', postEditUser);
 
 
@@ -16,19 +19,6 @@ router.post('/edituser', postEditUser);
 async function getListAccount (req, res) {
     let accountList = await mysql.queryAwait("select * from account");
     res.render('admin/account/account_list', { data : accountList});
-}
-
-// Xoa Account
-async function deleteAccount(req, res, next) {
-    let result;
-    if(req.body.type == 0) 
-        result = await model.deleteAccount(req.body.id);
-    else {
-        await mysql.queryAwait('delete from customer where account_id = ?',[req.body.id]);
-        result = await model.deleteAccount(req.body.id);
-    }
-    if(result) res.json({message : 'Xóa thành công'});
-    else res.json({ error: 'Lỗi, xóa thất bại!' });
 }
 
 function getAdd (req, res) {
@@ -72,10 +62,16 @@ async function postAdd (req, res, next) {
             return res.json({ ok : false , message : 'Có lỗi xảy ra , chưa thêm được' })
         }
     } else if ( data.type == '2') {
-        model.addUser(data, (ok) => {
-            if(ok) return res.json({ok : true, message : 'Thêm tài khoản thành công'});
-        else return res.json({ ok : false , message : 'Có lỗi xảy ra , chưa thêm được' });
-        });
+        try {
+            data.password = bcrypt.hashSync(data.password, bcrypt.genSaltSync(10));
+            model.addUser(data, (ok) => {
+                if(ok) return res.json({ok : true, message : 'Thêm tài khoản thành công'});
+                else return res.json({ ok : false , message : 'Có lỗi xảy ra , chưa thêm được' });
+            });
+        } catch (e) {
+            console.log(e);
+            return res.json({ ok : false , message : 'Có lỗi xảy ra , chưa thêm được' })
+        }
     } 
 };
 

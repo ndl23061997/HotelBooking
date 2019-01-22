@@ -80,7 +80,6 @@
                           rowspan="1"
                           colspan="1"
                           aria-label="Office: activate to sort column ascending"
-                          style="width: 118px;"
                         >
                           Loại tài khoản
                         </th>
@@ -90,7 +89,7 @@
                           rowspan="1"
                           colspan="1"
                           aria-label="Office: activate to sort column ascending"
-                          style="width: 118px;"
+                          style="width: 70px; text-align: center"
                         >
                           Thao tác
                         </th>
@@ -111,33 +110,11 @@
                             %>
                             <%= type %>
                         </td>
-                        <td style="width: fit-content">
+                        <td style="width: fit-content; text-align: center">
                           <a href="/admin/account/edit?id=<%= element.id %>&type=<%= element.type %>" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i> Sửa </a>
-                          <a onclick="_delete('<%= element.id  %>', '<%= element.type  %>')" type="button" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> Delete </a>
                         </td>
                       </tr>
                       <% }); %>
-
-                      <script>
-                        function _delete(id, type) {
-                          if(confirm("Bạn có chắc chắn muốn xóa tài khoản này không?")) {
-                            $.ajax({ 
-                              url : '/admin/account/delete', 
-                              method : 'POST', 
-                              data : {'id' : id , type : type},
-                              success: function (result) {
-                                if(result.error) {
-                                  sm('danger', result.error);
-                                  return;
-                                }
-                                sm('success',result.message);
-                                $("#row-id-"+id).remove();
-                              }
-                            })
-                          }
-                          return;
-                        }
-                      </script>
                     </tbody>
                   </table>
                 </div>

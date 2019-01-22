@@ -10,11 +10,51 @@ router.get('/get-ls-service-type', getServiceType);
 router.get('/get-service/:id', getServiceDetail);
 router.post('/order', postOrder);
 router.post('/add-discount', addDiscount);
+router.post('/paybill', payBill);
+router.post('/traphong', traPhong);
 
+function traPhong(req, res) {
+    let id = req.body.id; // Booking id
+    mysql.conn.query('select status from bill where booking_id = ?', [id], (err, done)=> {
+        if(done.length < 0) return res.json({ok: false, message:'Vui lòng kiểm tra lại hóa đơn'});
+        if(done[0].status == 0) return res.json({ok : 0, message : 'Vui lòng thanh toán hóa đơn trước'});
+        else {
+            let query = 'update booking set status = 2 where id = ?';
+            mysql.conn.query(query, [id], (err, done) => {
+                if(err) {
+                    console.log(err);
+                    res.json({ok : 0});
+                } //#endregion
+                console.log(done);
+                
+                if(done.affectedRows > 0) {
+                    res.json({ok : 1});
+                } else res.json({ok : 0, message:'Có lỗi xảy ra'})
+                return;
+            })
+        }
+    })
+}
+
+function payBill(req, res) {
+    let id = req.body.id;
+    let query = 'update bill set da_tt = tt where id = ?';
+    mysql.conn.query(query, [id], (err, done) => {
+        if(err) {
+            console.log(err);
+            res.json({ok : 0});
+        } //#endregion
+
+        if(done.affectedRows > 0) {
+            res.json({ok : true});
+        } else res.json({ok : false})
+        return;
+    })
+}
 
 function addDiscount(req, res) {
     let data = req.body;
-    console.log(data);
+    console.log('addDiscount abc',data);
     
     mysql.conn.query('call add_discount_to_bill(?,?)', [data.code, data.idbill], (err, done) => {
         if(err) {
@@ -23,7 +63,9 @@ function addDiscount(req, res) {
             return;
         }
         console.log('#addDiscount \n' , done);
-        res.json({ok : done[0][0].ok, message: done[0][0].message });
+        let rs = {ok : done[0][0].ok, message: done[0][0].message };
+        console.log(rs);
+        return res.json(rs);
     })
 }
 
@@ -33,11 +75,13 @@ function getRoomUse(req, res) {
     })
 }
 
-async function getDetailRoomUse(req, res) {
+async function getDetailRoomUse(req, res, next) {
     let id = req.params.id;
     let query = "select * from bill where booking_id = ?";
     let bill = await mysql.queryAwait(query, [id]);
-    modelBooking.getDetailBooking(id, (result) => {
+    console.log(bill);
+    modelBooking.getDetailRoomUse(id, (result) => {
+        if(result.length == 0) return next(new Error(404, 'Không có phòng này đang sử dụng'));
         let data = result[0];
         console.log('Bill \n', bill);
         res.render('admin/room_use/room_use_detail', {data : data, bill : bill[0]});

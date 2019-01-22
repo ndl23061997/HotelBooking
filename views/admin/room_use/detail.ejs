@@ -100,13 +100,59 @@
       />
     </div>
   </div>
-  <!-- Button dat phong  -->
+  <!-- Button  -->
   <div class="form-group" id="dobook">
     <label class="control-label col-md-3 col-sm-3 col-xs-12"> </label>
     <div class="col-md-9 col-sm-9 col-xs-12" id="booked-list">
-
-      <a href="/admin/room_use" type="button" id="btn-return" class="btn btn-primary">Quay lại</a>
+      <button class="btn btn-success" type="button" id="btn-traphong">Trả phòng</button>
+      <button class="btn btn-primary" type="button" id="btn-doiphong">Đổi phòng</button>
+      <a href="/admin/room_use" type="button" id="btn-return" class="btn btn-warning">Quay lại</a>
     </div>
   </div>
-  <!-- Button dat phong  -->
 </form>
+
+<script>
+  $(document).ready(() => {
+
+    $('#btn-doiphong').click(()=> {
+      Swal('Tính năng đang trong quá trình phát triển', '', 'warning');
+    })
+
+    $('#btn-traphong').click(() => {
+      $.confirm({
+        title: 'Chú ý',
+        content: 'Bạn có chắc muốn trả phòng',
+        buttons: {
+          ok: {
+            text: "Xác nhận",
+            btnClass: "btn btn-success",
+            action: () => {
+              traphong();
+            }
+          },
+          cancel: {
+            text: 'Hủy',
+            btnClass: "btn btn-danger"
+          }
+        }
+      })
+    })
+  })
+
+  function traphong() {
+    $.ajax({
+      method: 'POST',
+      url: '/admin/room_use/traphong',
+      data: { id: "<%= data.id %>" }
+    }).done((result) => {
+      if (result.ok == 1) {
+        Swal('Trả phòng thành công!', '', 'success');
+        setTimeout(() => {
+          window.location.replace('/admin/room_use');
+        }, 1500);
+      } else {
+        Swal('Lỗi!', result.message, 'error');
+      }
+    });
+  }
+</script>
