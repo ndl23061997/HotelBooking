@@ -34,7 +34,7 @@
 
             <div class="clearfix"></div>
           </div>
-          
+
           <div class="x_content">
             <form class="form-horizontal form-label-left" width="100%">
               <!-- Chọn khách sạn -->
@@ -49,12 +49,21 @@
               <!-- Chọn khách sạn -->
               <div class="form-group">
                 <label class="control-label col-md-3 col-sm-3 col-xs-12"
-                  >Chọn tháng:
+                  >Tháng:
                 </label>
                 <div class="col-md-6 col-sm-6 col-xs-12">
                   <select class="form-control" id="select-month"></select>
                 </div>
               </div>
+              <div class="form-group">
+                  <label class="control-label col-md-3 col-sm-3 col-xs-12"
+                    >Năm:
+                  </label>
+                  <div class="col-md-6 col-sm-6 col-xs-12">
+                    <input type="number" class="form-control" id="year">
+                  </div>
+                </div>
+
               <!-- Chọn khách sạn -->
               <div class="form-group">
                 <label class="control-label col-md-3 col-sm-3 col-xs-12"
@@ -66,14 +75,14 @@
               </div>
 
               <div class="form-group">
-                  <div class="col-md-6 col-md-offset-3">
-                    <button id="view" type="button" class="btn btn-success">
-                      Xem
-                    </button>
-                  </div>
+                <div class="col-md-6 col-md-offset-3">
+                  <button id="view" type="button" class="btn btn-success">
+                    Xem
+                  </button>
                 </div>
+              </div>
             </form>
-            <br>
+            <br />
             <!-- Table -->
             <div
               id="datatable_buttons_wrapper"
@@ -83,82 +92,19 @@
               <div class="row">
                 <div class="col-sm-12">
                   <table
-                    id="datatable-buttons"
-                    class="table table-striped table-bordered dataTable no-footer dtr-inline collapsed"
-                    role="grid"
-                    aria-describedby="datatable-buttons_info"
-                    style="width: 1033px;"
+                    id="tb-report"
+                    class="table table-striped table-bordered dataTable no-footer collapsed"
                   >
                     <thead>
                       <tr role="row">
-                        <th
-                          class="sorting_asc"
-                          tabindex="0"
-                          aria-controls="datatable-buttons"
-                          rowspan="1"
-                          colspan="1"
-                          style="width: 159px;"
-                          aria-sort="ascending"
-                        >
-                          Mã dịch vụ
-                        </th>
-                        <th
-                          class="sorting"
-                          tabindex="0"
-                          aria-controls="datatable-buttons"
-                          rowspan="1"
-                          colspan="1"
-                          style="width: 251px;"
-                        >
-                          Tên dịch vụ
-                        </th>
-                        <th
-                          class="sorting"
-                          tabindex="0"
-                          aria-controls="datatable-buttons"
-                          rowspan="1"
-                          colspan="1"
-                          style="width: 120px;"
-                        >
-                          Tháng
-                        </th>
-                        <th
-                          class="sorting"
-                          tabindex="0"
-                          aria-controls="datatable-buttons"
-                          rowspan="1"
-                          colspan="1"
-                          style="width: 61px; display: none;"
-                        >
-                          Doanh thu
-                        </th>
-                        <th
-                          class="sorting hidden"
-                          tabindex="0"
-                          aria-controls="datatable-buttons"
-                          rowspan="1"
-                          colspan="1"
-                          style="width: 117px; display: none;"
-                          disabled
-                        >
-                          
-                        </th>
-                        <th
-                          class="sorting hidden"
-                          tabindex="0"
-                          aria-controls="datatable-buttons"
-                          rowspan="1"
-                          colspan="1"
-                          style="width: 92px; display: none;"
-                          disabled
-                        >
-                          
-                        </th>
+                        <th>Mã dịch vụ</th>
+                        <th>Tên dịch vụ</th>
+                        <th>Thời gian</th>
+                        <th>Doanh thu</th>
                       </tr>
                     </thead>
 
-                    <tbody id="tbody">
-                        
+                    <tbody>
                     </tbody>
                   </table>
                 </div>
@@ -192,97 +138,76 @@
 
 <script>
   $(document).ready(() => {
-    // var table = $('#datatable-buttons').DataTable();
-    // new $.fn.dataTable.Buttons( table, {
-    // buttons: [
-    //     'copy', 'excel', 'pdf'
-    // ]
-    // } );
+    var table = $("#tb-report").DataTable({
+      dom: "Bfrtip",
+      buttons: ["copy", "csv", "excel", "pdf", "print"]
+    });
+    // Lay danh sasch casc khach san
     $.ajax({
-      url: 'getlisthotel',
-      method: 'GET'
-    }).done((datas)=> {
+      url: "getlisthotel",
+      method: "GET"
+    }).done(datas => {
       datas.forEach(element => {
-        $op = '<option value="'+ element.id +'">'+ element.name +'</option>'
-        $('#select-hotel').append($op);
+        $op =
+          '<option value="' + element.id + '">' + element.name + "</option>";
+        $("#select-hotel").append($op);
       });
-    })
-
-    for(let i = 1; i <= 12; i++) {
-      $op = '<option value="'+ i +'">Tháng '+ i +'</option>'
-      $('#select-month').append($op);
-    }
-    
-    $.ajax({
-      url:'getlistservice',
-      method:'GET'
-    }).done((datas)=> {
-      $op = '<option value="0">-- Tất cả --</option>'
-      $('#select-service').append($op); 
-      datas.forEach(element => {
-        $op = '<option value="'+ element.id +'">'+ element.name +'</option>'
-        $('#select-service').append($op);
-      });
-      
-    })
-
-    $('#view').click(()=> {
-      $hotel = $('#select-hotel').val();
-      $month = $('#select-month').val();
-      $service = $('#select-service').val();
-      let month = $month;
-      if($service == 0) {
-
-        $.ajax({
-          url: 'service-all',
-          method: 'POST',
-          data : {hotel : $hotel , month : $month, service : $service}
-        }).done((datas)=>{
-          $('#tbody').html(null);
-          datas.forEach(el => {
-            
-            $row = 
-            `<tr role="row" class="odd">
-              <td tabindex="" class="sorting_1">${el.service_id}</td>
-              <td>${el.name}</td>
-              <td style="">${$month}</td>
-              <td style="">${el.booking_money}</td>
-              <td style="display: none;" class="hidden disabled"></td>
-              <td style="display: none;" class="hidden disabled"></td>
-            </tr>`
-            console.log($row);
-            $('#tbody').html($('#tbody').html() + $row)
-          });
-
-          
-        })
-
-      } else {
-        $.ajax({
-          url: 'service-one',
-          method: 'POST',
-          data : {hotel : $hotel , month : $month, service : $service}
-        }).done((datas)=>{
-          $('#tbody').html(null);
-          datas.forEach(el => {
-            $row = 
-            `<tr role="row" class="odd">
-              <td tabindex="" class="sorting_1">${el.service_id}</td>
-              <td>${el.name}</td>
-              <td style="">${$month}</td>
-              <td style="">${el.booking_money}</td>
-              <td style="display: none;" class="hidden disabled"></td>
-              <td style="display: none;" class="hidden disabled"></td>
-            </tr>`
-            console.log($row);
-            $('#tbody').append($row);
-          });
-
-          
-        })
-      }
-
     });
 
-  })
+    // Khoi tao du lieu cho select
+    for (let i = 1; i <= 12; i++) {
+      $op = '<option value="' + i + '">Tháng ' + i + "</option>";
+      $("#select-month").append($op);
+    }
+
+    // Lay danh sach cac dich vu
+    $.ajax({
+      url: "getlistservice",
+      method: "GET"
+    }).done(datas => {
+      $op = '<option value="0">-- Tất cả --</option>';
+      $("#select-service").append($op);
+      datas.forEach(element => {
+        $op =
+          '<option value="' + element.id + '">' + element.name + "</option>";
+        $("#select-service").append($op);
+      });
+    });
+
+    // Khi nhan phim xem bao cao
+    $("#view").click(() => {
+      $hotel = $("#select-hotel").val();
+      $month = $("#select-month").val();
+      $service = $("#select-service").val();
+      $year = $('#year').val();
+      let month = $month;
+      if ($service == 0) {
+        $.ajax({
+          url: "rp-all-service",
+          method: "POST",
+          data: { hotel: $hotel, month: $month, service: $service , year : $year}
+        }).done(datas => {
+          datas.forEach(el => {
+            table.rows().remove().draw(true);
+            table.row
+              .add([el.service_id, el.name, 'Tháng '+ $month, el.service_money])
+              .draw(false);
+          });
+        });
+      } else {
+        $.ajax({
+          url: "rp-one-service",
+          method: "POST",
+          data: { hotel: $hotel, month: $month, service: $service, year : $year  }
+        }).done(datas => {
+          table.rows().remove().draw(true);
+          datas.forEach(el => {
+            table.row
+              .add([el.service_id, el.name, (new Date(el.checkout)).toLocaleDateString('en-GB'), el.service_money])
+              .draw(false);
+          });
+        });
+      }
+    });
+  });
 </script>
