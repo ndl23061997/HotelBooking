@@ -1,0 +1,111 @@
+<%- include('../nav-bar.ejs') %>
+<script src="/vendor/validator.js"></script>
+<div id="wrapper">
+
+    <%- include('../side-bar.ejs') %>
+
+    <!-- Content -->
+    <div id="content-wrapper">
+
+
+        <div class="container-fluid">
+            <!-- Breadcrumbs-->
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="/admin">Trang chính</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="../hotel-list">Phòng</a>
+                </li>
+                <li class="breadcrumb-item active">Thêm phòng</li>
+            </ol>
+
+
+            <!-- Alert message -->
+            <%- include('../alert-message.ejs') %>
+
+            <form action="/admin/room/add-room" class="bootstrap-form needs-validation" role="form" data-toggle="validator"
+                method="post" enctype="multipart/form-data" id="form">
+                <div class="form-group">
+                    <label>Mã phòng</label>
+                    <input type="text" class="form-control" name="maso" required>
+                    
+                        <div class="invalid-feedback">Không được bỏ trống!</div>
+                </div>
+
+                <div class="form-group">
+                    <label>Giá phòng</label>
+                    <input type="number" class="form-control" name="price" id="price">
+                    <!-- <div class="invalid-feedback">Không được bỏ trống!</div> -->
+                    <script>
+                        bootstrapValidate('#price', 'required:Không được bỏ trống!|min:6:Giá quá nhỏ!')
+                    </script>
+                </div>
+                <!-- Selection -->
+                <div class="form-group">
+                    <label>Loại phòng:</label>
+                    <select class="form-control" name="type_id" id="roomtype" required>
+                        <% data.roomtypes.forEach(item => { %>
+                        <option value="<%= item.id%>">
+                            <%= item.name %>
+                        </option>
+                        <% }) %>
+                    </select>
+                    <div class="invalid-feedback">Không được bỏ trống!</div>
+
+                </div>
+                <!-- Selection -->
+                <div class="form-group">
+                    <label>Thuộc khách sạn:</label>
+                    <select class="form-control" name="hotel_id" id="hotel" required>
+                        <% data.hotels.forEach(item => { %>
+                        <option value="<%= item.id %>">
+                            <%= item.name + ' (' + item.maso + ' - id:' +item.id + ')' %>
+                        </option>
+                        <% }) %>
+                    </select>
+                    <div class="invalid-feedback">Không được bỏ trống!</div>
+                </div>
+                <!-- Textarea -->
+                <div class="form-group">
+                    <label for="comment">Mô tả:</label>
+                    <textarea class="form-control" name="des" rows="5" id="comment" value=" "></textarea>
+                </div>
+                <script>
+                    // $('#hotel').val(0).change()
+                    // $('#roomtype').val(0).change()
+                </script>
+                <!-- Hình ảnh  -->
+                <label for="images-upload">Hình ảnh:</label>
+
+                <div class="form-group">
+                    <input id="images-upload" name="images" type="file" class="file" multiple data-show-upload="false"
+                        data-show-caption="true" data-msg-placeholder="Chọn ảnh tải lên...">
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary" id="save-data" onclick="return addRoom()">Lưu lại</button>
+                    <a href="/admin/room/room-list" class="btn btn-danger">
+                        Hủy
+                    </a>
+                    <script>
+                        function addRoom () {
+                            if (confirm('Bạn chắc chắn muốn lưu thông tin không ?')) {
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        }
+                    
+                    </script>
+                </div>
+
+            </form>
+        </div>
+        <!-- /.content-wrapper -->
+    </div>
+
+    </script>
+</div>
+<!-- /#wrapper -->
+
+<%- include('../sticky-footer.ejs') %>

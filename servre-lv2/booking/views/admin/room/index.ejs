@@ -1,0 +1,49 @@
+<%- include('../nav-bar.ejs') %>
+
+<div id="wrapper">
+
+    <%- include('../side-bar.ejs') %>
+
+    <!-- Content -->
+    <div id="content-wrapper">
+
+
+        <div class="container-fluid">
+            <!-- Breadcrumbs-->
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="/admin">Trang chính</a>
+                </li>
+                <li class="breadcrumb-item active">Quản lí phòng</li>
+            </ol>
+
+            <!-- Alert message -->
+            <%- include('../alert-message.ejs') %>
+
+            <!-- Tab bar -->
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link" href="room-list" id="room">Phòng</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="hotel-list" id="hotel">Khách sạn</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="roomtype-list" id="roomtype">Loại phòng</a>
+                </li>
+            </ul>
+            <script>$("#<%= page %>").addClass("active");</script>
+            <br>
+
+            <!-- Table  -->
+            <% if(page !='') { %>
+            <%- include(page+'-list') %>
+            <% } %>
+        </div>
+        <!-- /.content-wrapper -->
+    </div>
+
+</div>
+<!-- /#wrapper -->
+
+<%- include('../sticky-footer.ejs') %>

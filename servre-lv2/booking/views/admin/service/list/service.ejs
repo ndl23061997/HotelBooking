@@ -1,0 +1,111 @@
+<%- include('../../nav-bar.ejs') %>
+
+<div id="wrapper">
+
+    <%- include('../../side-bar.ejs') %>
+
+    <!-- Content -->
+    <div id="content-wrapper">
+
+
+        <div class="container-fluid">
+            <!-- Breadcrumbs-->
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="/admin">Trang chính</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="/admin/service">Quản lí dịch vụ</a>
+                </li>
+                <li class="breadcrumb-item active">Danh sách dịch vụ</li>
+
+            </ol>
+
+            <!-- Alert message -->
+            <%- include('../../alert-message.ejs') %>
+
+
+            <!-- Tab bar -->
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link active" href="service" id="room">Dịch vụ</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="service-type" id="hotel">Loại dịch vụ</a>
+                </li>
+            </ul>
+            <br>
+
+            <!-- Nội dung list service  -->
+            <div class="card mb-3">
+                <div class="card-header">
+                    <i class="fas fa-table"></i>
+                    Danh sách dịch vụ
+                    <a class="btn btn-success" style="float:right; color: #fff;" href="../add/service">Thêm</a>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Mã dịch vụ</th>
+                                    <th>Tên</th>
+                                    <th>Giá</th>
+                                    <th>Loại</th>
+                                    <th>Trạng thái</th>
+                                    <th class="thao-tac">Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% if(locals.datas) { %>
+                                <% datas.forEach(item => { %>
+                                <tr>
+                                    <td>
+                                        <%= item.id %>
+                                    </td>
+                                    <td>
+                                        <%= item.maso %>
+                                    </td>
+                                    <td>
+                                        <%= item.name %>
+                                    </td>
+                                    <td>
+                                        <%= item.price %>
+                                    </td>
+                                    <td>
+                                        <%= item.type_name %>
+                                    </td>
+                                    <td>
+                                        <%= item.status = 0 ? 'Tạm hết' : 'Sẵn có' %>
+                                    </td>
+                                    <td class="thao-tac">
+                                        <a href="../edit/service/<%=item.id%>">sửa</a>
+                                        <a href="../delete/service/<%=item.id%>" onclick="_delete(); return false ;">xóa</a>
+                                    </td>
+
+                                    <script>
+                                        function _delete() {
+                                            if (confirm('Bạn chắc chắn muốn xóa ? \n Dữ liệu sẽ không thể khôi phục!')) {
+                                                next();
+                                            }
+                                        }
+                                    </script>
+                                </tr>
+                                <% }) %>
+                                <% } %>
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- /.content-wrapper -->
+    </div>
+
+</div>
+<!-- /#wrapper -->
+
+<%- include('../../sticky-footer.ejs') %>

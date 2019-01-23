@@ -37,7 +37,7 @@ function listHotel(req, res) {
 }
 
 function listDiscount(req, res) {
-    mysql.conn.query('select * from discount', (err, done) => {
+    mysql.conn.query('select * from discount limit 1000', (err, done) => {
         let data = [];
         try{
             data = done;

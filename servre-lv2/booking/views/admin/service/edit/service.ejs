@@ -1,0 +1,180 @@
+<%- include('../../nav-bar.ejs') %>
+<div id="wrapper">
+
+    <%- include('../../side-bar.ejs') %>
+
+    <!-- Content -->
+    <div id="content-wrapper">
+
+
+        <div class="container-fluid">
+            <!-- Breadcrumbs-->
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="/admin">Trang chính</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="../list/service">Dịch vụ</a>
+                </li>
+                <li class="breadcrumb-item active">Sửa dịch vụ</li>
+            </ol>
+
+
+            <!-- Alert Message -->
+            <% if(locals.message1 && message1 != '') { %>
+            <div class="alert alert-success">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+                    ×</button>
+                <p>
+                    <%= message1 %>
+                </p>
+            </div>
+            <% } %>
+
+            <% if( locals.message2 && message2 != '') { %>
+            <div class="alert alert-danger">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+                    ×</button>
+                <p>
+                    <%= message2 %>
+                </p>
+            </div>
+            <%  } %>
+            
+            
+            <form action="" class="bootstrap-form needs-validation" enctype="multipart/form-data" role="form"
+                data-toggle="validator" method="post" id="form">
+
+                <div class="form-group">
+                    <label>ID</label>
+                    <input type="text" value="<%= data.id %>" class="form-control" name="id" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label>Tên dịch vụ</label>
+                    <input type="text" value="<%= data.name %>" class="noempty form-control" name="name" id="name2">
+                    <script>
+                        bootstrapValidate('#name', 'required:Không được bỏ trống!')
+                    </script>
+                </div>
+                <div class="form-group">
+                    <label>Mã dịch vụ</label>
+                    <input type="text" value="<%= data.maso %>" id="maso" class="noempty2 form-control" name="maso" required>
+
+                    <script>
+                        bootstrapValidate('#maso', 'required:Không được bỏ trống!')
+                    </script>
+                </div>
+                
+                <div class="form-group">
+                    <label>Giá dịch vụ</label>
+                    <input type="number" class="form-control" value="<%= data.price %>" name="price" id="price">
+                    <!-- <div class="invalid-feedback">Không được bỏ trống!</div> -->
+                    <script>
+                        bootstrapValidate('#price', 'required:Không được bỏ trống!|min:5:Giá quá nhỏ!')
+                    </script>
+                </div>
+
+                <!-- Selection -->
+                <div class="form-group">
+                    <label>Loại dịch vụ:</label>
+                    <select class="form-control notempty" name="type_id" id="servicetype">
+                        <% servicetypes.forEach(item => { %>
+                        <option value="<%= item.id%>">
+                            <%= item.name %>
+                        </option>
+                        <% }) %>
+                    </select>
+                    <script>
+                        $('#servicetype').val("<%= data.type_id %>").change();
+                    </script>
+                </div>
+
+                <div class="form-group">
+                    <label>Loại dịch vụ:</label>
+                    <select class="form-control notempty" name="status" id="status">
+                        <option value="1" selected>
+                            Sẵn có
+                        </option>
+                        <option value="0">
+                            Tạm hết
+                        </option>
+                    </select>
+
+                    <script>
+                        $('#status').val("<%= data.status %>").change();
+                    </script>
+                </div>
+                <!-- Textarea -->
+                <div class="form-group">
+                    <label for="comment">Mô tả:</label>
+                    <textarea class="form-control" name="des" rows="5" id="comment" placeholder="Nhập mô tả" aria-valuetext=""><%= data.des %></textarea>
+                </div>
+
+                <!-- Hình ảnh  -->
+                <label for="images-upload">Hình ảnh:</label>
+                <div class="form-group row">
+                    <% if(locals.data.image.length > 0) data.image.forEach(item => { %>
+
+
+                    <div class="col-lg-3 col-md-4 col-xs-6 thumb">
+                        <a class="close close-image" href="#">×</a>
+                        <a href="#" rel="ligthbox">
+                            <img src="<%= item %>" class="zoom img-fluid " alt="">
+
+                        </a>
+                    </div>
+                    <% }) %>
+
+                    <script>
+                        $('.close-image').click(function () {
+                            if (confirm('Bạn chắc chắn muốn xóa hình này?'))
+                                $.post("/admin/service/delete/image-service",
+                                    {
+                                        id: "<%= data.id %>",
+                                        image: $(this).parent('.thumb').children('a').children('img').attr('src')
+                                    })
+                                    .done((data) => {
+                                        alert(data);
+                                        $(this).parent('.thumb').remove();
+                                    })
+                        })
+                    </script>
+                </div>
+                <!-- Image input  -->
+                <div class="form-group">
+                    <input id="images-upload" name="images" type="file" class="file" multiple data-show-upload="false"
+                        data-show-caption="true" data-msg-placeholder="Chọn ảnh tải lên...">
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary" id="save-data" onclick="return _save()">Lưu lại</button>
+                    <a href="../list/service" class="btn btn-danger" onclick="return _return()">Quay lại</a>
+                    <script>
+                        function _save() {
+                            if (confirm('Bạn chắc chắn muốn lưu thông tin không ?')) {
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        }
+
+                        function _return() {
+                            if (confirm('Bạn muốn quay lại không?')) {
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        }
+                    </script>
+                </div>
+
+            </form>
+        </div>
+        <!-- /.content-wrapper -->
+    </div>
+
+</div>
+<!-- /#wrapper -->
+
+<%- include('../../sticky-footer.ejs') %>

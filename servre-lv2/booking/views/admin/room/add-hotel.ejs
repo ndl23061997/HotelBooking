@@ -1,0 +1,107 @@
+<%- include('../nav-bar.ejs') %>
+<script src="/vendor/validator.js"></script>
+<div id="wrapper">
+
+    <%- include('../side-bar.ejs') %>
+
+    <!-- Content -->
+    <div id="content-wrapper">
+
+
+        <div class="container-fluid">
+            <!-- Breadcrumbs-->
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="/admin">Trang chính</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="hotel-list">Khách sạn</a>
+                </li>
+                <li class="breadcrumb-item active">Thêm khách sạn</li>
+            </ol>
+
+
+            <!-- Alert message -->
+            <%- include('../alert-message.ejs') %>
+
+            <form action="/admin/room/add-hotel" class="bootstrap-form needs-validation"  role="form" data-toggle="validator"
+                method="post" enctype="multipart/form-data" id="form">
+
+                <div class="form-group ">
+                    <label>Mã khách sạn</label>
+                    <input type="text" class="form-control" name="maso" required>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                    <div class="invalid-feedback">
+                        Looks bad!
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Tên khách sạn</label>
+                    <input type="text" class="form-control" name="name" id="name" required>
+                    <div class="help-block with-errors"></div>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                    <div class="invalid-feedback">
+                        Looks bad!
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Địa chỉ</label>
+                    <input type="text" class="form-control" name="location">
+                    <div class="help-block with-errors"></div>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                    <div class="invalid-feedback">
+                        Looks bad!
+                    </div>
+                </div>
+                <!-- Textarea -->
+                <div class="form-group">
+                    <label for="comment">Mô tả:</label>
+                    <textarea class="form-control" name="des" rows="5" id="comment"></textarea>
+                </div>
+
+                <!-- Hình ảnh  -->
+                <label for="images-upload">Hình ảnh:</label>
+
+                <div class="form-group">
+                    <input id="images-upload" name="images" type="file" class="file" multiple data-show-upload="false"
+                        data-show-caption="true" data-msg-placeholder="Chọn ảnh tải lên...">
+                </div>
+                <div class="form-group">
+                    <input type="submit" class="btn btn-success" id="save-data" onclick="return _save()" value="Xác nhận"></input>
+                    <a href="/admin/room/hotel-list" class="btn btn-danger" onclick="return _return()">Hủy</a>
+                    <script>
+                        function _save() {
+                            if (confirm('Bạn chắc chắn muốn lưu thông tin không ?')) {
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        }
+
+                        function _return() {
+                            if (confirm('Bạn muốn quay lại không?')) {
+                                return true;
+                            } else { 
+                                return false;
+                            }
+                        }
+                    </script>
+                </div>
+
+            </form>
+        </div>
+        <!-- /.content-wrapper -->
+    </div>
+
+    </script>
+</div>
+<!-- /#wrapper -->
+
+<%- include('../sticky-footer.ejs') %>

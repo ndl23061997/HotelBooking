@@ -1,0 +1,132 @@
+<%- include('../nav-bar.ejs') %>
+<script src="/vendor/validator.js"></script>
+<div id="wrapper">
+
+    <%- include('../side-bar.ejs') %>
+
+    <!-- Content -->
+    <div id="content-wrapper">
+
+
+        <div class="container-fluid">
+            <!-- Breadcrumbs-->
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="/admin">Trang chính</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="hotel-list">Tin tức</a>
+                </li>
+                <li class="breadcrumb-item active">Sửa tin tức</li>
+            </ol>
+
+            <!-- Alert message -->
+            <%- include('../alert-message.ejs') %>
+
+
+            <form action="" class="bootstrap-form needs-validation" role="form" data-toggle="validator" method="post"
+                enctype="multipart/form-data" id="form">
+
+                <div class="form-group">
+                    <label>ID</label>
+                    <input type="text" value="<%= data.id %>" class="form-control" name="id" readonly>
+                </div>
+
+
+                <div class="form-group ">
+                    <label>Tiêu đề </label>
+                    <input type="text" class="form-control" name="title" value="<%= data.title %>" required>
+                    <div class="valid-feedback">
+                        OK!
+                    </div>
+                    <div class="invalid-feedback">
+                        Không được bỏ trống!
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Độ ưu tiên</label>
+                    <input type="number" class="form-control" name="priority" value="<%= data.priority %>" required>
+                    <div class="help-block with-errors"></div>
+                    <div class="valid-feedback">
+                        OK!
+                    </div>
+                    <div class="invalid-feedback">
+                        Không được bỏ trống!
+                    </div>
+                </div>
+                <!-- Textarea -->
+                <div class="form-group">
+                    <label for="comment">Nội dung :</label>
+                    <textarea class="form-control" name="content" rows="5" id="comment"><%= data.content %></textarea>
+                </div>
+
+
+                <!-- Hình ảnh  -->
+                <label for="images-upload">Hình ảnh:</label>
+                <div class="form-group row">
+                        <% if(locals.data.image.length > 0) data.image.forEach(item => { %>
+    
+    
+                        <div class="col-lg-3 col-md-4 col-xs-6 thumb">
+                            <a class="close close-image" href="#">×</a>
+                            <a href="#" rel="ligthbox">
+                                <img src="<%= item %>" class="zoom img-fluid " alt="">
+    
+                            </a>
+                        </div>
+                        <% }) %>
+    
+                        <script>
+                            $('.close-image').click(function () {
+                                if (confirm('Bạn chắc chắn muốn xóa hình này?'))
+                                    $.post("/admin/news/delete/image-news",
+                                        {
+                                            id: "<%= data.id %>",
+                                            image: $(this).parent('.thumb').children('a').children('img').attr('src')
+                                        })
+                                        .done((data) => {
+                                            alert(data);
+                                            $(this).parent('.thumb').remove();
+                                        })
+                            })
+                        </script>
+                    </div>
+
+                <div class="form-group">
+                    <input id="images-upload" name="images" type="file" class="file" multiple data-show-upload="false"
+                        data-show-caption="true" data-msg-placeholder="Chọn ảnh tải lên...">
+                </div>
+                <div class="form-group">
+                    <input type="submit" class="btn btn-success" id="save-data" onclick="return _save()" value="Xác nhận"></input>
+                    <a href="/admin/room/hotel-list" class="btn btn-danger" onclick="return _return()">Hủy</a>
+                    <script>
+                        function _save() {
+                            if (confirm('Bạn chắc chắn muốn lưu thông tin không ?')) {
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        }
+
+                        function _return() {
+                            if (confirm('Bạn muốn quay lại không?')) {
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        }
+                    </script>
+                </div>
+
+            </form>
+        </div>
+        <!-- /.content-wrapper -->
+    </div>
+
+</script>
+</div>
+<!-- /#wrapper -->
+
+<%- include('../sticky-footer.ejs') %>
